@@ -1,0 +1,1 @@
+const fs=require('node:fs');const path=require('node:path');fs.mkdirSync(path.join(__dirname,'dist'),{recursive:true});for(const f of fs.readdirSync(__dirname)){if(f.endsWith('.html')||['styles.css','script.js','assets'].includes(f))fs.cpSync(path.join(__dirname,f),path.join(__dirname,'dist',f),{recursive:true});}console.log('All static pages built.');
