@@ -1,1 +1,45 @@
-{"$schema":"https://openapi.vercel.sh/vercel.json","framework":null,"installCommand":"node -e \"console.log('No dependencies required')\"","buildCommand":"node build.cjs","outputDirectory":"dist","headers":[{"source":"/(.*)","headers":[{"key":"X-Content-Type-Options","value":"nosniff"},{"key":"Referrer-Policy","value":"strict-origin-when-cross-origin"}]}]}
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "corepack pnpm install --frozen-lockfile",
+  "buildCommand": "node build.cjs",
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/blog",
+      "destination": "/api/blog"
+    },
+    {
+      "source": "/blog/:slug",
+      "destination": "/api/blog?slug=:slug"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "/admin/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/admin/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ]
+}

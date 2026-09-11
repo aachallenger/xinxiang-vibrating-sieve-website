@@ -67,3 +67,4 @@ assets/hero.png：首页与介绍区图片。
 ## 构建
 Node.js 20 及以上运行 npm run build，生成 dist。无需 npm install。
 这是交付源码包，尚未替你上传 GitHub 或发布到 Vercel。
+
