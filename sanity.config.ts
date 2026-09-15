@@ -7,10 +7,10 @@ const dataset = process.env.SANITY_STUDIO_DATASET || settings.dataset
 if (!projectId) throw new Error('Connect your Sanity project before building the blog administrator.')
 
 export default defineConfig({
-  name: 'xinxiang-blog', title: '新乡振动筛 · 博客管理', projectId, dataset, basePath: '/admin',
-  plugins: [structureTool({structure: S => S.list().title('内容管理').items([
-    S.listItem().title('全部文章').child(S.documentTypeList('post').title('全部文章')),
-    S.listItem().title('草稿 / 未发布修改').child(S.documentList().title('草稿 / 未发布修改').filter('_type == "post" && _id in path("drafts.**")')),
+  name: 'xinxiang-blog', title: '新乡振动筛 · 博客管理', projectId, dataset,
+  plugins: [structureTool({structure: S => S.list().id('content').title('内容管理').items([
+    S.listItem().id('all-posts').title('全部文章').child(S.documentTypeList('post').id('all-posts-list').title('全部文章')),
+    S.listItem().id('draft-posts').title('草稿 / 未发布修改').child(S.documentList().id('draft-posts-list').title('草稿 / 未发布修改').filter('_type == "post" && _id in path("drafts.**")')),
   ])})],
   schema: {types: [defineType({
     name:'post', title:'博客文章', type:'document',
