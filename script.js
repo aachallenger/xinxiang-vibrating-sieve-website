@@ -18,7 +18,6 @@ megaItems.forEach((item) => {
   const trigger = item.querySelector('.mega-trigger')
   trigger?.addEventListener('click', (event) => { event.stopPropagation(); const open = !item.classList.contains('mega-open'); closeMegaMenus(item); setMegaMenu(item, open) })
   item.addEventListener('pointerenter', () => { if (desktopMenu.matches) { closeMegaMenus(item); setMegaMenu(item, true) } })
-  item.addEventListener('pointerleave', () => { if (desktopMenu.matches) setMegaMenu(item, false) })
   item.addEventListener('focusin', () => { if (desktopMenu.matches) { closeMegaMenus(item); setMegaMenu(item, true) } })
 })
 nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => { menu?.setAttribute('aria-expanded', 'false'); nav.classList.remove('open'); closeMegaMenus() }))
@@ -46,3 +45,4 @@ const equipmentField = document.querySelector('#equipment')
 if (equipmentField && params.has('equipment')) { const value = params.get('equipment'); if ([...equipmentField.options].some((option) => option.value === value)) equipmentField.value = value }
 const requirements = document.querySelector('#requirements')
 if (requirements && params.has('subject')) requirements.value = `Project: ${params.get('subject').slice(0, 300)}\nMaterial: \nTarget capacity: \nRequired particle size: `
+
