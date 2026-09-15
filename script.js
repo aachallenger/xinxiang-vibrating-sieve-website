@@ -10,9 +10,17 @@ document.querySelectorAll('[data-filter]').forEach((button) => button.addEventLi
 const menu = document.querySelector('.menu-toggle')
 const nav = document.querySelector('#navigation')
 const megaItems = [...document.querySelectorAll('.nav-item.has-mega')]
-function closeMegaMenus(except) { megaItems.forEach((item) => { if (item !== except) { item.classList.remove('mega-open'); item.querySelector('.mega-toggle')?.setAttribute('aria-expanded', 'false') } }) }
+const desktopMenu = window.matchMedia('(min-width: 801px)')
+function setMegaMenu(item, open) { item.classList.toggle('mega-open', open); item.querySelector('.mega-trigger')?.setAttribute('aria-expanded', String(open)) }
+function closeMegaMenus(except) { megaItems.forEach((item) => { if (item !== except) setMegaMenu(item, false) }) }
 menu?.addEventListener('click', () => { const open = menu.getAttribute('aria-expanded') !== 'true'; menu.setAttribute('aria-expanded', String(open)); nav?.classList.toggle('open', open); if (!open) closeMegaMenus() })
-megaItems.forEach((item) => item.querySelector('.mega-toggle')?.addEventListener('click', (event) => { event.stopPropagation(); const open = !item.classList.contains('mega-open'); closeMegaMenus(item); item.classList.toggle('mega-open', open); event.currentTarget.setAttribute('aria-expanded', String(open)) }))
+megaItems.forEach((item) => {
+  const trigger = item.querySelector('.mega-trigger')
+  trigger?.addEventListener('click', (event) => { event.stopPropagation(); const open = !item.classList.contains('mega-open'); closeMegaMenus(item); setMegaMenu(item, open) })
+  item.addEventListener('pointerenter', () => { if (desktopMenu.matches) { closeMegaMenus(item); setMegaMenu(item, true) } })
+  item.addEventListener('pointerleave', () => { if (desktopMenu.matches) setMegaMenu(item, false) })
+  item.addEventListener('focusin', () => { if (desktopMenu.matches) { closeMegaMenus(item); setMegaMenu(item, true) } })
+})
 nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => { menu?.setAttribute('aria-expanded', 'false'); nav.classList.remove('open'); closeMegaMenus() }))
 document.addEventListener('click', (event) => { if (!event.target.closest('.has-mega')) closeMegaMenus() })
 document.addEventListener('keydown', (event) => { if (event.key !== 'Escape') return; closeMegaMenus(); if (nav?.classList.contains('open')) { nav.classList.remove('open'); menu?.setAttribute('aria-expanded', 'false'); menu?.focus() } })
